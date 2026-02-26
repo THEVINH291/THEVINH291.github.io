@@ -1,143 +1,99 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quy Nhơn AI Explorer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=2070') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+// 1. Cấu hình API và Linh hồn cho Anh Tư Nẫu
+const API_KEY = "AIzaSyDrivva6o13JLgeXniOe6zIqVDOFaAcKdY"; 
+const SYSTEM_PROMPT = `Bạn là "Anh Tư", một người bản địa Quy Nhơn, Bình Định. 
+Phong cách: Vui vẻ, nhiệt tình, dùng từ địa phương như "chu cha", "ngon bá chấy", "dẫy nhen", "rẻ rề".
+Nhiệm vụ: Tư vấn du lịch Quy Nhơn. Ưu tiên gợi ý các quán ăn gần trường Bùi Thị Xuân hoặc các địa điểm "hidden gem".
+Lưu ý: Luôn trả lời bằng tiếng Việt, ngắn gọn và đậm chất dân dã Bình Định.`;
 
-        .glass-panel {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-        }
+// 2. Hàm gọi AI thật
+async function askTưNẫu(userInput) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: SYSTEM_PROMPT + "\nNgười dùng hỏi: " + userInput }] }]
+            })
+        });
+        const data = await response.json();
+        return data.candidates[0].content.parts[0].text;
+    } catch (error) {
+        console.error("Lỗi:", error);
+        return "Chu cha, mạng mẽo bị chi rồi, đợi tui xíu nhen!";
+    }
+}
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+// 3. Quản lý Giao diện và Chức năng
+function openFeature(name) {
+    const modal = document.getElementById('modal');
+    const title = document.getElementById('modal-title');
+    const content = document.getElementById('modal-content');
+    const chatArea = document.getElementById('chat-input-area');
 
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
+    modal.classList.remove('hidden');
+    title.innerText = name;
+    content.innerHTML = ''; // Xóa nội dung cũ
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
-</head>
-<body class="p-4">
+    if (name === 'Chatbot Thổ Địa') {
+        chatArea.classList.remove('hidden');
+        content.innerHTML = `<div class="bg-white/10 p-3 rounded-lg mb-4 text-sm border-l-4 border-orange-400">
+            <b>Anh Tư:</b> Chu cha, chào bạn nha! Muốn ăn chi, chơi chi ở Quy Nhơn cứ hỏi tui chỉ cho dẫy nhen!
+        </div>`;
+    } else if (name === 'Học Tiếng Nẫu') {
+        chatArea.classList.add('hidden');
+        content.innerHTML = `
+            <div class="space-y-4">
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Chu cha:</b> Biểu thị sự ngạc nhiên (Wow).</div>
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Dẫy nhen:</b> Vậy nhé/Đồng ý nhé.</div>
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Nẫu:</b> Họ/Người ta/Người bản xứ.</div>
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Trời quơ:</b> Trời ơi.</div>
+            </div>`;
+    } else if (name === 'Bản đồ Khám phá') {
+        chatArea.classList.add('hidden');
+        content.innerHTML = `
+            <div class="rounded-xl overflow-hidden h-full min-h-[300px] border border-white/20">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62057.2530353177!2d109.1862145783203!3d13.771241199999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316f6b500693cc3d%3A0xc31911367098f98c!2zUXV5 Nhơn, Bình Định!5e0!3m2!1svi!2s!4v1710000000000" 
+                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>`;
+    } else {
+        chatArea.classList.add('hidden');
+        content.innerHTML = `<p class="text-center opacity-50 mt-10 italic">Tính năng đang được nẫu phát triển...</p>`;
+    }
+}
 
-    <div class="max-w-4xl w-full text-center text-white">
-        <header class="mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-widest uppercase mb-2">Quy Nhơn</h1>
-            <h2 class="text-2xl md:text-3xl font-semibold text-orange-400 tracking-wider">AI EXPLORER</h2>
-            <p class="text-gray-300 mt-2 font-light italic">Trợ lý Thổ Địa Ảo của bạn</p>
-        </header>
+async function handleSendMessage() {
+    const input = document.getElementById('ai-input');
+    const content = document.getElementById('modal-content');
+    const text = input.value.trim();
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
-            
-            <div onclick="openFeature('Chatbot Thổ Địa')" class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center gap-4">
-                <i class="fa-regular fa-comments text-4xl"></i>
-                <span class="text-lg font-medium">Chatbot Thổ Địa</span>
-            </div>
+    if (!text) return;
 
-            <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center gap-4">
-                <i class="fa-solid fa-location-dot text-4xl"></i>
-                <span class="text-lg font-medium">Bản đồ Khám phá</span>
-            </div>
+    // Hiện tin nhắn người dùng
+    content.innerHTML += `<div class="text-right mb-4"><span class="bg-orange-500/40 p-2 px-4 rounded-2xl text-sm inline-block shadow-lg">${text}</span></div>`;
+    input.value = '';
+    content.scrollTop = content.scrollHeight;
 
-            <div onclick="openFeature('Audio Thuyết minh')" class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center gap-4">
-                <i class="fa-solid fa-headphones text-4xl"></i>
-                <span class="text-lg font-medium">Audio Thuyết minh</span>
-            </div>
+    // Hiện trạng thái chờ
+    const tempId = "loading-" + Date.now();
+    content.innerHTML += `<div id="${tempId}" class="text-xs italic opacity-50 text-blue-200 mb-4 ml-2">Anh Tư đang nhớ lại...</div>`;
 
-            <div onclick="openFeature('Học Tiếng Nẫu')" class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center gap-4">
-                <i class="fa-solid fa-book-open text-4xl"></i>
-                <span class="text-lg font-medium">Học Tiếng Nẫu</span>
-            </div>
+    // Gọi AI và hiện kết quả
+    const reply = await askTưNẫu(text);
+    document.getElementById(tempId).remove();
+    content.innerHTML += `<div class="bg-white/10 p-3 rounded-lg mb-4 text-sm border-l-4 border-orange-400 animate-pulse">
+        <b>Anh Tư:</b> ${reply}
+    </div>`;
+    content.scrollTop = content.scrollHeight;
+}
 
-        </div>
+function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
+}
 
-        <footer class="mt-12 text-gray-400 text-sm">
-            &copy; 2026 Dự án STEM - Lớp 11A2 - THPT Bùi Thị Xuân
-        </footer>
-    </div>
-
-    <div id="modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="glass-panel w-full max-w-lg overflow-hidden flex flex-col relative" style="height: 80vh;">
-            <div class="p-4 border-b border-white/10 flex justify-between items-center text-white">
-                <h3 id="modal-title" class="font-bold uppercase tracking-widest">Tính năng</h3>
-                <button onclick="closeModal()"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            
-            <div id="modal-content" class="flex-1 overflow-y-auto p-4 text-white text-left no-scrollbar">
-                </div>
-
-            <div id="chat-input-area" class="p-4 border-t border-white/10 hidden">
-                <div class="relative">
-                    <input type="text" id="ai-input" placeholder="Hỏi Anh Tư Nẫu..." class="w-full bg-white/10 border border-white/20 rounded-full py-3 px-5 text-white focus:outline-none focus:ring-2 focus:ring-orange-400">
-                    <button class="absolute right-3 top-2 text-orange-400 p-1 px-3">Gửi</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openFeature(name) {
-            const modal = document.getElementById('modal');
-            const title = document.getElementById('modal-title');
-            const content = document.getElementById('modal-content');
-            const chatArea = document.getElementById('chat-input-area');
-
-            modal.classList.remove('hidden');
-            title.innerText = name;
-            
-            if (name === 'Chatbot Thổ Địa') {
-                chatArea.classList.remove('hidden');
-                content.innerHTML = `
-                    <div class="bg-white/10 p-3 rounded-lg mb-4 text-sm">
-                        <b>Anh Tư:</b> Chu cha, chào bạn nha! Muốn ăn chi, chơi chi ở Quy Nhơn cứ hỏi tui chỉ cho dẫy nhen!
-                    </div>
-                `;
-            } else if (name === 'Học Tiếng Nẫu') {
-                chatArea.classList.add('hidden');
-                content.innerHTML = `
-                    <ul class="space-y-4">
-                        <li class="bg-white/5 p-3 rounded-lg"><b>Chu cha:</b> Từ biểu thị sự ngạc nhiên.</li>
-                        <li class="bg-white/5 p-3 rounded-lg"><b>Dẫy nhen:</b> Vậy nhé.</li>
-                        <li class="bg-white/5 p-3 rounded-lg"><b>Nẫu:</b> Họ/Người ta.</li>
-                    </ul>
-                `;
-            } else {
-                chatArea.classList.add('hidden');
-                content.innerHTML = `<p class="text-center opacity-50 mt-10 italic">Tính năng [${name}] đang được cập nhật...</p>`;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
-    </script>
-</body>
-</html>
+// Lắng nghe sự kiện nút Gửi
+document.querySelector('#chat-input-area button').addEventListener('click', handleSendMessage);
+document.getElementById('ai-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSendMessage();
+});
