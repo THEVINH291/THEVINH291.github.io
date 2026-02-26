@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thời khóa biểu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Tiêu đề có thể chỉnh sửa */
+        .editable-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        
+        .editable-header:hover {
+            background: #f1f5f9;
+            cursor: text;
+        }
+
+        h1[contenteditable="true"] {
+            outline: none;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        p[contenteditable="true"] {
+            outline: none;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Bảng điều khiển */
+        .controls {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .control-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
+        
+        input, select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        /* Table Style */
+        .timetable-wrapper {
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .slot {
+            min-height: 60px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-left: 4px solid var(--primary-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="editable-header">
+        <h1 contenteditable="true" title="Nhấp để đổi tiêu đề">Thời Khóa Biểu Của Tôi</h1>
+        <p contenteditable="true" title="Nhấp để đổi mô tả">Tùy chỉnh và quản lý lịch học từ Thứ 2 - Thứ 7</p>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Phông chữ</label>
+            <select id="fontFamily" onchange="updateStyles()">
+                <option value="'Inter', sans-serif">Hiện đại (Inter)</option>
+                <option value="'Segoe UI', sans-serif">Hệ thống (Segoe)</option>
+                <option value="'Times New Roman', serif">Có chân (Times)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Cỡ chữ (px)</label>
+            <input type="number" id="fontSize" value="16" min="12" max="24" oninput="updateStyles()">
+        </div>
+        <div class="control-group">
+            <label>Màu chủ đạo</label>
+            <input type="color" id="primaryColor" value="#4f46e5" oninput="updateStyles()">
+        </div>
+    </div>
+
+    <div class="timetable-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Tiết</th>
+                    <th>Thứ 2</th>
+                    <th>Thứ 3</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 5</th>
+                    <th>Thứ 6</th>
+                    <th>Thứ 7</th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const days = [2, 3, 4, 5, 6, 7];
+    const totalPeriods = 5;
+
+    function initTable() {
+        const tbody = document.getElementById('timetableBody');
+        for (let i = 1; i <= totalPeriods; i++) {
+            let row = `<tr><td style="font-weight:600; background:#f8fafc">Tiết ${i}</td>`;
+            for (let j = 0; j < 6; j++) {
+                row += `<td onclick="editCell(this)">
+                            <div class="slot">Trống</div>
+                        </td>`;
+            }
+            row += `</tr>`;
+            tbody.innerHTML += row;
+        }
+    }
+
+    function updateStyles() {
+        const font = document.getElementById('fontFamily').value;
+        const size = document.getElementById('fontSize').value;
+        const color = document.getElementById('primaryColor').value;
+
+        document.body.style.fontFamily = font;
+        document.body.style.fontSize = size + 'px';
+        
+        // Cập nhật màu sắc
+        document.documentElement.style.setProperty('--primary-color', color);
+        document.querySelectorAll('th').forEach(th => th.style.backgroundColor = color);
+        document.querySelectorAll('.slot').forEach(s => s.style.borderLeftColor = color);
+    }
+
+    function editCell(cell) {
+        const currentText = cell.querySelector('.slot').innerText;
+        const newSubject = prompt("Nhập tên môn học hoặc nội dung:", currentText);
+        if (newSubject !== null && newSubject.trim() !== "") {
+            cell.querySelector('.slot').innerText = newSubject;
+        }
+    }
+
+    window.onload = initTable;
+</script>
+
+</body>
+</html>
