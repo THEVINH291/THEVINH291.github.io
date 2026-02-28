@@ -362,33 +362,62 @@
             });
         }
 
-        // Logic Chatbot giả lập
-        function sendMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('ai-input');
-            const chatBox = document.getElementById('chat-box');
-            
-            if (!input.value.trim()) return;
+        // Cấu hình API Key (Lưu ý: Chỉ nên dùng trực tiếp ở Frontend để test)
+const API_KEY = 'AIzaSyDnTeiQwv4z67inpfh5PtP42A_dnTTFrbQ'; 
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-            // User message
-            const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${input.value}</div>`;
-            chatBox.innerHTML += userMsg;
+// Hàm gọi API của AI
+async function getAIResponse(userText) {
+    // Đây là "linh hồn" của chatbot - định hình tính cách cho Anh Tư
+    const systemPrompt = `Bạn là "Anh Tư", một người dân địa phương nhiệt tình, chất phác. Trách nhiệm của bạn là tư vấn du lịch, ẩm thực, văn hóa về Xứ Nẫu (Bình Định) và Gia Lai. Hãy trả lời ngắn gọn, thân thiện, thỉnh thoảng dùng các từ ngữ địa phương (như nhen, nghen, chu cha, hết sảy).
+    Câu hỏi của khách: "${userText}"`;
 
-            // Simple AI Logic
-            const text = input.value.toLowerCase();
-            let reply = "Chu cha, cái này tui đang học thêm nên chưa rõ. Để tui hỏi ông bà tui rồi trả lời sau nhen!";
-            
-            if (text.includes("ăn")) reply = "Ăn thì phải thử Bánh xèo tôm nhảy, Bún chả cá hoặc Bánh hỏi lòng heo nhen. Ngon bá cháy!";
-            if (text.includes("chơi")) reply = "Bạn đi Eo Gió ngắm hoàng hôn, hoặc qua đảo Kỳ Co tắm biển là hết sảy luôn!";
-            if (text.includes("đẹp")) reply = "Quy Nhơn mình chỗ nào cũng đẹp hết á, nhất là con đường biển Xuân Diệu buổi tối.";
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: systemPrompt }] }]
+            })
+        });
+        
+        const data = await response.json();
+        // Trích xuất câu trả lời từ API trả về
+        return data.candidates[0].content.parts[0].text;
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+        return "Chu cha, mạng mẽo nay sao á, tui không nghe rõ. Nhắn lại tui nghen!";
+    }
+}
 
-            setTimeout(() => {
-                chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> ${reply}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 800);
+// Logic Chatbot đã được nâng cấp AI
+async function sendMessage(e) {
+    e.preventDefault();
+    const input = document.getElementById('ai-input');
+    const chatBox = document.getElementById('chat-box');
+    
+    const userText = input.value.trim();
+    if (!userText) return;
 
-            input.value = '';
-        }
+    // 1. Hiển thị tin nhắn của User
+    const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${userText}</div>`;
+    chatBox.innerHTML += userMsg;
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 2. Hiển thị trạng thái "Anh Tư đang gõ..."
+    const typingId = "typing-" + Date.now();
+    chatBox.innerHTML += `<div id="${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> đang gõ...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 3. Gọi API và chờ kết quả
+    const reply = await getAIResponse(userText);
+
+    // 4. Xóa chữ "đang gõ" và hiển thị câu trả lời thật của AI
+    document.getElementById(typingId).innerHTML = `<b>Anh Tư:</b> ${reply}`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
     </script>
 </body>
 </html>
+
