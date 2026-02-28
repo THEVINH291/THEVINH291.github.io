@@ -211,39 +211,10 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             // AI Chat
-            async function getAIResponse(userText) {
-    const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                contents: [{ 
-                    parts: [{ text: prompt }] 
-                }] 
-            })
-        });
-
-        const data = await response.json();
-
-        // Kiểm tra nếu có lỗi trả về từ API (ví dụ sai Key)
-        if (data.error) {
-            console.error("Lỗi từ Google:", data.error.message);
-            return "Chu cha, chìa khóa (API Key) có vấn đề rồi, kiểm tra lại nhen!";
+            const responseText = await getAIResponse(text);
+            chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20"><b>Anh Tư:</b> ${responseText}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-
-        // Kiểm tra cấu trúc dữ liệu trả về
-        if (data.candidates && data.candidates[0].content) {
-            return data.candidates[0].content.parts[0].text;
-        }
-        
-        return "Anh Tư đang bận xíu, lát hỏi lại nhen!";
-    } catch (e) {
-        console.error("Lỗi mạng:", e);
-        return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
-    }
-}
-
 
         async function getAIResponse(userText) {
             const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
@@ -262,5 +233,3 @@
     </script>
 </body>
 </html>
-
-
