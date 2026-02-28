@@ -219,11 +219,11 @@
         async function getAIResponse(userText) {
             const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(API_URL), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
+                };
                 const data = await response.json();
                 return data.candidates[0].content.parts[0].text;
             } catch (e) {
@@ -233,3 +233,4 @@
     </script>
 </body>
 </html>
+
