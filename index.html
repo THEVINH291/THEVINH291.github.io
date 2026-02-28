@@ -117,7 +117,7 @@
                     <div id="modal-icon" class="text-2xl text-orange-400"></div>
                     <h3 id="modal-title" class="font-bold text-xl uppercase"></h3>
                 </div>
-                <button onclick="closeModal()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10">
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 text-white">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
@@ -128,7 +128,7 @@
                 <form onsubmit="sendMessage(event)" class="relative flex gap-2">
                     <input type="text" id="ai-input" placeholder="Hỏi Anh Tư về món ăn, đường đi..." 
                            class="flex-1 bg-white/10 border border-white/20 rounded-2xl py-4 px-6 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50">
-                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-14 rounded-2xl transition-colors">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-14 rounded-2xl transition-colors flex items-center justify-center">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
@@ -137,16 +137,17 @@
     </div>
 
     <script>
-        // CẤU HÌNH API (Thay bằng Key đã được giới hạn của bạn)
+        // 1. Thay Key API của bạn vào đây nhen
         const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0'; 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
+        // 2. Nội dung các tab
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
                 content: `<div id="chat-box" class="space-y-4 flex flex-col">
                             <div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20">
-                                <b>Anh Tư:</b> Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Bạn muốn hỏi chỗ ăn ngon hay cảnh đẹp Bình Định cứ nói tui nghe!
+                                <b>Anh Tư:</b> Chu cha! Chào bạn nhen. Tui là Anh Tư Nẫu. Bạn muốn hỏi chỗ ăn ngon hay cảnh đẹp Bình Định cứ nói tui nghe!
                             </div>
                          </div>`
             },
@@ -154,11 +155,11 @@
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `<div class="space-y-4">
                             <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
-                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-24 h-24 object-cover rounded-xl">
+                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-24 h-24 object-cover rounded-xl" alt="Kỳ Co">
                                 <div><h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4><p class="text-sm">"Maldives của Việt Nam" - Nước xanh ngắt luôn.</p></div>
                             </div>
                             <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
-                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg" class="w-24 h-24 object-cover rounded-xl">
+                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg" class="w-24 h-24 object-cover rounded-xl" alt="Tháp Đôi">
                                 <div><h4 class="font-bold text-orange-400">Tháp Đôi</h4><p class="text-sm">Kiến trúc Chăm cổ kính ngay lòng thành phố.</p></div>
                             </div>
                          </div>`
@@ -180,6 +181,7 @@
             }
         };
 
+        // 3. Hàm mở/đóng tính năng
         function openFeature(name) {
             const modal = document.getElementById('modal');
             document.getElementById('modal-title').innerText = name;
@@ -198,6 +200,7 @@
             document.getElementById('modal').classList.add('hidden');
         }
 
+        // 4. Hàm Gửi Tin Nhắn Chatbot
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
@@ -205,44 +208,46 @@
             const text = input.value.trim();
             if (!text) return;
 
-            // User Chat
-            chatBox.innerHTML += `<div class="chat-bubble bg-white/10 self-end ml-auto"><b>Bạn:</b> ${text}</div>`;
+            // In tin nhắn của bạn
+            chatBox.innerHTML += `<div class="chat-bubble bg-white/10 text-white self-end ml-auto border border-white/20"><b>Bạn:</b> ${text}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // AI Chat
-            async function getAIResponse(userText) {
-    const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
-    
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-        });
-        
-        const data = await response.json();
+            // Lấy câu trả lời từ AI
+            const responseText = await getAIResponse(text);
 
-        // NẾU GOOGLE BÁO LỖI (Bao gồm cả lỗi 404, sai Key, chưa bật API...)
-        if (!response.ok) {
-            console.error("LỖI CHI TIẾT TỪ GOOGLE:", data);
-            return `Anh Tư bị kẹt rồi: ${data.error ? data.error.message : 'Lỗi không xác định'}`;
+            // In tin nhắn của Anh Tư
+            chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20"><b>Anh Tư:</b> ${responseText}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // NẾU THÀNH CÔNG
-        return data.candidates[0].content.parts[0].text;
-        
-    } catch (e) {
-        console.error("Lỗi đứt mạng hoặc sai code:", e);
-        return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
-    }
+        // 5. Hàm giao tiếp với Google Gemini
+        async function getAIResponse(userText) {
+            const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("LỖI TỪ GOOGLE:", data);
+                    return `Anh Tư bị kẹt xíu rồi: ${data.error ? data.error.message : 'Không xác định'}`;
+                }
+
+                if (data.candidates && data.candidates[0].content) {
+                    return data.candidates[0].content.parts[0].text;
+                }
+                return "Chu cha, nãy giờ tui hổng nghe rõ. Nhắn lại nhen!";
+            } catch (e) {
+                console.error("Lỗi:", e);
+                return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
             }
-        </script>
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
-
