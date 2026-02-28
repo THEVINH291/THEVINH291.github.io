@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                         url('https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/950bcf7605a0349ff66bec673b9f817955a43a0d/R.png?raw=true') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
@@ -20,7 +20,7 @@
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
@@ -37,15 +37,15 @@
             background: rgba(251, 146, 60, 0.2);
             transform: translateY(-8px);
             border-color: rgba(251, 146, 60, 0.5);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .chat-bubble {
             max-width: 85%;
             padding: 12px 16px;
             border-radius: 18px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             animation: fadeIn 0.3s ease;
+            line-height: 1.5;
         }
 
         @keyframes fadeIn {
@@ -54,6 +54,7 @@
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        #chat-box { scroll-behavior: smooth; }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center">
@@ -61,9 +62,9 @@
     <div class="max-w-5xl w-full text-center text-white py-10">
         <header class="mb-12">
             <div class="inline-block px-4 py-1 rounded-full bg-orange-500/20 text-orange-400 text-sm font-semibold mb-4 border border-orange-500/30">
-                AI First – BTSX
+                AI First – BTSX (Lớp 11A2)
             </div>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-2">QUY NHƠN</h1>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-2 uppercase">Quy Nhơn</h1>
             <h2 class="text-2xl md:text-3xl font-bold text-orange-400 tracking-[0.2em] mb-4">AI EXPLORER</h2>
             <p class="text-gray-300 max-w-lg mx-auto font-light leading-relaxed">Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Ăn gì, chơi đâu, nói tiếng bản địa thế nào? Có tui lo!</p>
         </header>
@@ -73,48 +74,36 @@
                 <div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 text-3xl">
                     <i class="fa-regular fa-comments"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Anh Tư Nẫu</h3>
-                    <p class="text-xs text-gray-400">Hỏi đáp du lịch 24/7</p>
-                </div>
+                <h3 class="font-bold text-lg text-white">Anh Tư Nẫu</h3>
             </div>
 
             <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-3xl p-8 flex flex-col items-center gap-4 cursor-pointer">
                 <div class="w-16 h-16 rounded-2xl bg-green-500/20 flex items-center justify-center text-green-400 text-3xl">
                     <i class="fa-solid fa-location-dot"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Điểm Check-in</h3>
-                    <p class="text-xs text-gray-400">Tọa độ không thể bỏ lỡ</p>
-                </div>
+                <h3 class="font-bold text-lg text-white">Điểm Check-in</h3>
             </div>
 
             <div onclick="openFeature('Audio Thuyết minh')" class="glass-card rounded-3xl p-8 flex flex-col items-center gap-4 cursor-pointer">
                 <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-3xl">
                     <i class="fa-solid fa-headphones"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Audio Guide</h3>
-                    <p class="text-xs text-gray-400">Nghe kể chuyện lịch sử</p>
-                </div>
+                <h3 class="font-bold text-lg text-white">Audio Guide</h3>
             </div>
 
-            <div onclick="openFeature('Học Tiếng &quot;Nẫu&quot;')" class="glass-card rounded-3xl p-8 flex flex-col items-center gap-4 cursor-pointer">
+            <div onclick="openFeature('Học Tiếng Nẫu')" class="glass-card rounded-3xl p-8 flex flex-col items-center gap-4 cursor-pointer">
                 <div class="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 text-3xl">
                     <i class="fa-solid fa-book-open"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Học Tiếng "Nẫu"</h3>
-                    <p class="text-xs text-gray-400">Giao tiếp như người bản xứ</p>
-                </div>
+                <h3 class="font-bold text-lg text-white">Học Tiếng "Nẫu"</h3>
             </div>
         </div>
 
         <footer class="mt-16 text-gray-400 text-sm">
             <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
             <div class="flex justify-center mt-4">
-                <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" rel="noopener noreferrer" title="Facebook Trường THPT Bùi Thị Xuân">
-                    <i class="fab fa-facebook text-3xl hover:text-blue-500 hover:scale-110 transition-all duration-300 cursor-pointer"></i>
+                <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank">
+                    <i class="fab fa-facebook text-3xl hover:text-blue-500 hover:scale-110 transition-all cursor-pointer"></i>
                 </a>
             </div>
         </footer>
@@ -126,19 +115,18 @@
             <div class="p-6 border-b border-white/10 flex justify-between items-center text-white">
                 <div class="flex items-center gap-3">
                     <div id="modal-icon" class="text-2xl text-orange-400"></div>
-                    <h3 id="modal-title" class="font-bold text-xl uppercase tracking-wider"></h3>
+                    <h3 id="modal-title" class="font-bold text-xl uppercase"></h3>
                 </div>
-                <button onclick="closeModal()" class="hover:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
             
-            <div id="modal-content" class="flex-1 overflow-y-auto p-6 text-white no-scrollbar">
-                </div>
+            <div id="modal-content" class="flex-1 overflow-y-auto p-6 text-white no-scrollbar"></div>
 
             <div id="chat-input-area" class="p-4 bg-white/5 border-t border-white/10 hidden">
                 <form onsubmit="sendMessage(event)" class="relative flex gap-2">
-                    <input type="text" id="ai-input" placeholder="Hỏi về đặc sản, điểm đến..." 
+                    <input type="text" id="ai-input" placeholder="Hỏi Anh Tư về món ăn, đường đi..." 
                            class="flex-1 bg-white/10 border border-white/20 rounded-2xl py-4 px-6 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50">
                     <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-14 rounded-2xl transition-colors">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -149,266 +137,99 @@
     </div>
 
     <script>
+        // CẤU HÌNH API (Thay bằng Key đã được giới hạn của bạn)
+        const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0'; 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
-                content: `
-                    <div id="chat-box" class="space-y-4">
-                        <div class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100">
-                            <b>Anh Tư:</b> Chu cha! Chào bạn tới thăm Quy Nhơn nhen. Tui là Anh Tư Nẫu - "thổ địa" ở đây. Bạn muốn hỏi đường đi, chỗ ăn ngon hay khách sạn giá rẻ cứ nói tui nghe!
-                        </div>
-                    </div>
-                `
+                content: `<div id="chat-box" class="space-y-4 flex flex-col">
+                            <div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20">
+                                <b>Anh Tư:</b> Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Bạn muốn hỏi chỗ ăn ngon hay cảnh đẹp Bình Định cứ nói tui nghe!
+                            </div>
+                         </div>`
             },
             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
-                content: `
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" alt="Kỳ Co" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4>
-                                <p class="text-sm text-gray-300">"Maldives của Việt Nam" với làn nước trong xanh và những vách đá hùng vĩ.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 25km</span>
+                content: `<div class="space-y-4">
+                            <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
+                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-24 h-24 object-cover rounded-xl">
+                                <div><h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4><p class="text-sm">"Maldives của Việt Nam" - Nước xanh ngắt luôn.</p></div>
                             </div>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Tháp Đôi (Tháp Hưng Thạnh)</h4>
-                                <p class="text-sm text-gray-300">Kiến trúc Chăm Pa độc đáo ngay lòng thành phố.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Tại trung tâm thành phố</span>
+                            <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
+                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg" class="w-24 h-24 object-cover rounded-xl">
+                                <div><h4 class="font-bold text-orange-400">Tháp Đôi</h4><p class="text-sm">Kiến trúc Chăm cổ kính ngay lòng thành phố.</p></div>
                             </div>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/ghenhrang.jpg" onerror="this.src='https://images.unsplash.com/photo-1557456170-0cf4f4d0d362?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'" alt="Ghềnh Ráng Tiên Sa" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Khu du lịch Ghềnh Ráng Tiên Sa</h4>
-                                <p class="text-sm text-gray-300">Nơi lưu giữ nét đẹp thơ mộng của bãi tắm Hoàng Hậu, bãi Tiên Sa và gắn liền với thi sĩ Hàn Mặc Tử.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 3km</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/honkho.jpg" onerror="this.src='https://images.unsplash.com/photo-1596422846543-74c6e624b5df?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'" alt="Đảo Hòn Khô" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Đảo Hòn Khô</h4>
-                                <p class="text-sm text-gray-300">Trải nghiệm lặn ngắm san hô tuyệt đẹp và check-in cây cầu gỗ ôm trọn vách núi sát biển.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 16km</span>
-                            </div>
-                        </div>
-                    </div>
-                `
+                         </div>`
             },
             'Audio Thuyết minh': {
                 icon: '<i class="fa-solid fa-headphones"></i>',
-                content: `
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Sự tích Đầm Thị Nại</span>
-                            </div>
-                            <span class="text-sm text-gray-400">04:20</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Lịch sử Hàn Mặc Tử & Ghềnh Ráng</span>
-                            </div>
-                            <span class="text-sm text-gray-400">05:45</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Bí ẩn kiến trúc Tháp Đôi</span>
-                            </div>
-                            <span class="text-sm text-gray-400">03:15</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Huyền thoại Võ Tây Sơn Bình Định</span>
-                            </div>
-                            <span class="text-sm text-gray-400">06:10</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Ẩm thực: Bánh ít lá gai & Rượu Bàu Đá</span>
-                            </div>
-                            <span class="text-sm text-gray-400">04:50</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Ký ức làng chài Nhơn Lý</span>
-                            </div>
-                            <span class="text-sm text-gray-400">05:25</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play"></i></button>
-                                <span>Hòn Sẹo: Viên ngọc thô giữa biển</span>
-                            </div>
-                            <span class="text-sm text-gray-400">03:40</span>
-                        </div>
-                    </div>
-                `
+                content: `<div class="space-y-3">
+                            <div class="flex items-center justify-between bg-white/5 p-4 rounded-xl"><span>Sự tích Đầm Thị Nại</span><i class="fa-solid fa-circle-play text-orange-500 text-2xl"></i></div>
+                            <div class="flex items-center justify-between bg-white/5 p-4 rounded-xl"><span>Huyền thoại Võ Tây Sơn</span><i class="fa-solid fa-circle-play text-orange-500 text-2xl"></i></div>
+                         </div>`
             },
-            'Học Tiếng "Nẫu"': {
+            'Học Tiếng Nẫu': {
                 icon: '<i class="fa-solid fa-book-open"></i>',
-                content: `
-                    <div class="mb-6 relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng..." 
-                               class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all">
-                    </div>
-                    
-                    <div id="nau-dictionary" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Nẫu</h4>
-                            <p class="text-sm text-gray-300">Người ta, họ, anh ấy/chị ấy.</p>
-                            <em class="text-xs text-gray-500">VD: "Nẫu nói chi mặc nẫu" (Người ta nói gì kệ người ta).</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Chu cha</h4>
-                            <p class="text-sm text-gray-300">Từ cảm thán (Trời ơi!).</p>
-                            <em class="text-xs text-gray-500">VD: "Chu cha, đẹp dữ dẫy!"</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dẫy nhen / Dẫy ó</h4>
-                            <p class="text-sm text-gray-300">Vậy nhé / Vậy đó.</p>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Biểu</h4>
-                            <p class="text-sm text-gray-300">Bảo, nói.</p>
-                            <em class="text-xs text-gray-500">VD: "Nẫu biểu đi lặn san hô mà tui hổng chịu."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Trổng / Ngoải / Trển</h4>
-                            <p class="text-sm text-gray-300">Trong đó / Ngoài đó / Trên đó.</p>
-                            <em class="text-xs text-gray-500">VD: "Vô trổng ngồi cho mát dẫy nhen."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dìa / Tấu</h4>
-                            <p class="text-sm text-gray-300">Về / Tối.</p>
-                            <em class="text-xs text-gray-500">VD: "Chời tấu rầu lo mà dìa."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Mắc cừ</h4>
-                            <p class="text-sm text-gray-300">Mắc cười, buồn cười.</p>
-                            <em class="text-xs text-gray-500">VD: "Chuyện nghe mắc cừ zữ ông nậu."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Phẻ</h4>
-                            <p class="text-sm text-gray-300">Khỏe.</p>
-                            <em class="text-xs text-gray-500">VD: "Hôm nay tao thấy phẻ gơ."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Càm ràm</h4>
-                            <p class="text-sm text-gray-300">Cằn nhằn, càu nhàu.</p>
-                            <em class="text-xs text-gray-500">VD: "Ngầu không mà cứ càm ràm miết."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Phỉnh</h4>
-                            <p class="text-sm text-gray-300">Giỡn, đùa, gạt.</p>
-                            <em class="text-xs text-gray-500">VD: "Đừng tin, nẫu phỉnh mày đó!"</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dẫy na</h4>
-                            <p class="text-sm text-gray-300">Vậy hả, thế à.</p>
-                            <em class="text-xs text-gray-500">VD: "Quán này rẻ lắm. - Dẫy na?"</em>
-                        </div>
-                    </div>
-                `
+                content: `<div class="grid grid-cols-1 gap-2">
+                            <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Nẫu:</b> Người ta / Họ</div>
+                            <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Chu cha:</b> Trời ơi (cảm thán)</div>
+                            <div class="bg-white/5 p-3 rounded-lg border border-white/10"><b>Dìa:</b> Về</div>
+                         </div>`
             }
         };
 
         function openFeature(name) {
             const modal = document.getElementById('modal');
-            const title = document.getElementById('modal-title');
-            const icon = document.getElementById('modal-icon');
-            const content = document.getElementById('modal-content');
-            const chatArea = document.getElementById('chat-input-area');
-
-            modal.classList.remove('hidden');
-            title.innerText = name;
-            icon.innerHTML = features[name].icon;
-            content.innerHTML = features[name].content;
+            document.getElementById('modal-title').innerText = name;
+            document.getElementById('modal-icon').innerHTML = features[name].icon;
+            document.getElementById('modal-content').innerHTML = features[name].content;
             
             if (name === 'Chatbot Thổ Địa') {
-                chatArea.classList.remove('hidden');
+                document.getElementById('chat-input-area').classList.remove('hidden');
             } else {
-                chatArea.classList.add('hidden');
+                document.getElementById('chat-input-area').classList.add('hidden');
             }
+            modal.classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
         }
 
-        // Logic tìm kiếm từ vựng Tiếng Nẫu
-        function searchNau() {
-            const input = document.getElementById('search-nau').value.toLowerCase();
-            const items = document.querySelectorAll('#nau-dictionary .nau-item');
-            
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                if (text.includes(input)) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
-            });
+        async function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('ai-input');
+            const chatBox = document.getElementById('chat-box');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // User Chat
+            chatBox.innerHTML += `<div class="chat-bubble bg-white/10 self-end ml-auto"><b>Bạn:</b> ${text}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI Chat
+            const responseText = await getAIResponse(text);
+            chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20"><b>Anh Tư:</b> ${responseText}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-<script>
-
-// Cấu hình API Key (Lưu ý: Chỉ nên dùng trực tiếp ở Frontend để test)
-const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0';
-// Đã sửa lại tên model cho chuẩn xác
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-
-// Hàm gọi API của AI (Bản đã nâng cấp chức năng bắt lỗi an toàn)
-async function getAIResponse(userText) {
-    const systemPrompt = `Bạn là "Anh Tư", một người dân địa phương nhiệt tình, chất phác. Trách nhiệm của bạn là tư vấn du lịch, ẩm thực, văn hóa về Xứ Nẫu (Bình Định) và Gia Lai. Hãy trả lời ngắn gọn, thân thiện, thỉnh thoảng dùng các từ ngữ địa phương (như nhen, nghen, chu cha, hết sảy).
-    Câu hỏi của khách: "${userText}"`;
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: systemPrompt }] }]
-            })
-        });
-        
-        const data = await response.json();
-
-        // 1. Nếu Google báo lỗi (như sai Key, sai Model), nó sẽ hiện thẳng ra Console để mình biết
-        if (data.error) {
-            console.error("LỖI TỪ GOOGLE:", data.error.message);
-            return `Chu cha, máy chủ Google báo lỗi vầy nè: ${data.error.message}`;
+        async function getAIResponse(userText) {
+            const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (e) {
+                return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
+            }
         }
-
-        // 2. Nếu thành công, trả về câu nói của AI
-        if (data.candidates && data.candidates.length > 0) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            console.error("Dữ liệu lạ:", data);
-            return "Chu cha, tui đang ngập ngừng xíu, bạn hỏi lại câu khác nghen!";
-        }
-
-    } catch (error) {
-        // 3. Lỗi đứt mạng hoặc không kết nối được
-        console.error("Lỗi mạng:", error);
-        return "Chu cha, mạng mẽo nay sao á, tui không nghe rõ. Nhắn lại tui nghen!";
-    }
-}
+    </script>
 </body>
 </html>
-
-
-
-
-
