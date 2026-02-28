@@ -362,49 +362,127 @@
             });
         }
 
-     // Cấu hình API Key (Lưu ý: Chỉ nên dùng trực tiếp ở Frontend để test)
-const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0';
-// Đã sửa lại tên model cho chuẩn xác
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+<script>
 
-// Hàm gọi API của AI (Bản đã nâng cấp chức năng bắt lỗi an toàn)
+// ⚠️ CHỈ DÙNG FRONTEND ĐỂ TEST
+const API_KEY = "AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0";
+
+const API_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+  API_KEY;
+
+
+// ==========================
+// Hàm gọi Gemini API
+// ==========================
 async function getAIResponse(userText) {
-    const systemPrompt = `Bạn là "Anh Tư", một người dân địa phương nhiệt tình, chất phác. Trách nhiệm của bạn là tư vấn du lịch, ẩm thực, văn hóa về Xứ Nẫu (Bình Định) và Gia Lai. Hãy trả lời ngắn gọn, thân thiện, thỉnh thoảng dùng các từ ngữ địa phương (như nhen, nghen, chu cha, hết sảy).
-    Câu hỏi của khách: "${userText}"`;
 
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: systemPrompt }] }]
-            })
-        });
-        
-        const data = await response.json();
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{
+            text: `
+Bạn là "Anh Tư", người dân địa phương Bình Định - Gia Lai.
+Chuyên tư vấn du lịch, ẩm thực, văn hóa xứ Nẫu.
+Trả lời ngắn gọn, thân thiện.
+Thỉnh thoảng dùng từ như: nhen, nghen, chu cha, hết sảy.
+Nếu câu hỏi ngoài chủ đề thì khéo léo lái về du lịch Gia Lai - Bình Định.
+`
+          }]
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userText }]
+          }
+        ]
+      })
+    });
 
-        // 1. Nếu Google báo lỗi (như sai Key, sai Model), nó sẽ hiện thẳng ra Console để mình biết
-        if (data.error) {
-            console.error("LỖI TỪ GOOGLE:", data.error.message);
-            return `Chu cha, máy chủ Google báo lỗi vầy nè: ${data.error.message}`;
-        }
-
-        // 2. Nếu thành công, trả về câu nói của AI
-        if (data.candidates && data.candidates.length > 0) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            console.error("Dữ liệu lạ:", data);
-            return "Chu cha, tui đang ngập ngừng xíu, bạn hỏi lại câu khác nghen!";
-        }
-
-    } catch (error) {
-        // 3. Lỗi đứt mạng hoặc không kết nối được
-        console.error("Lỗi mạng:", error);
-        return "Chu cha, mạng mẽo nay sao á, tui không nghe rõ. Nhắn lại tui nghen!";
+    // Nếu API trả lỗi (403, 429, 400...)
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API Error:", errorText);
+      return "Chu cha, bên Google đang trục trặc rồi nghen!";
     }
+
+    const data = await response.json();
+
+    // Kiểm tra dữ liệu trả về an toàn
+    if (
+      data.candidates &&
+      data.candidates.length > 0 &&
+      data.candidates[0].content &&
+      data.candidates[0].content.parts &&
+      data.candidates[0].content.parts.length > 0
+    ) {
+      return data.candidates[0].content.parts[0].text;
+    } else {
+      console.error("Phản hồi không hợp lệ:", data);
+      return "Tui đang bí ý quá, hỏi lại thử coi nhen!";
+    }
+
+  } catch (error) {
+    console.error("Lỗi fetch:", error);
+    return "Chu cha, mạng mẽo có vấn đề rồi nghen!";
+  }
 }
+
+
+// ==========================
+// Logic Chatbot
+// ==========================
+async function sendMessage(e) {
+  e.preventDefault();
+
+  const input = document.getElementById("ai-input");
+  const chatBox = document.getElementById("chat-box");
+
+  const userText = input.value.trim();
+  if (!userText) return;
+
+  // 1️⃣ Hiển thị tin nhắn user
+  chatBox.innerHTML += `
+    <div class="chat-bubble bg-white/10 ml-auto border border-white/10">
+      <b>Bạn:</b> ${userText}
+    </div>
+  `;
+
+  input.value = "";
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // 2️⃣ Hiển thị trạng thái đang gõ
+  const typingId = "typing-" + Date.now();
+
+  chatBox.innerHTML += `
+    <div id="${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100">
+      <b>Anh Tư:</b> đang gõ...
+    </div>
+  `;
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // 3️⃣ Gọi AI
+  const reply = await getAIResponse(userText);
+
+  // 4️⃣ Hiển thị kết quả
+  const typingElement = document.getElementById(typingId);
+  if (typingElement) {
+    typingElement.innerHTML = `<b>Anh Tư:</b> ${reply}`;
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+</script>
 </body>
 </html>
+
 
 
 
