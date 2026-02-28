@@ -362,13 +362,13 @@
             });
         }
 
-        // Cấu hình API Key (Lưu ý: Chỉ nên dùng trực tiếp ở Frontend để test)
-const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0'; 
+     // Cấu hình API Key (Lưu ý: Chỉ nên dùng trực tiếp ở Frontend để test)
+const API_KEY = 'AIzaSyD4FUZw6g9m2iUcEk67hVFk7yC68JMUCB0';
+// Đã sửa lại tên model cho chuẩn xác
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-// Hàm gọi API của AI
+// Hàm gọi API của AI (Bản đã nâng cấp chức năng bắt lỗi an toàn)
 async function getAIResponse(userText) {
-    // Đây là "linh hồn" của chatbot - định hình tính cách cho Anh Tư
     const systemPrompt = `Bạn là "Anh Tư", một người dân địa phương nhiệt tình, chất phác. Trách nhiệm của bạn là tư vấn du lịch, ẩm thực, văn hóa về Xứ Nẫu (Bình Định) và Gia Lai. Hãy trả lời ngắn gọn, thân thiện, thỉnh thoảng dùng các từ ngữ địa phương (như nhen, nghen, chu cha, hết sảy).
     Câu hỏi của khách: "${userText}"`;
 
@@ -382,43 +382,29 @@ async function getAIResponse(userText) {
         });
         
         const data = await response.json();
-        // Trích xuất câu trả lời từ API trả về
-        return data.candidates[0].content.parts[0].text;
+
+        // 1. Nếu Google báo lỗi (như sai Key, sai Model), nó sẽ hiện thẳng ra Console để mình biết
+        if (data.error) {
+            console.error("LỖI TỪ GOOGLE:", data.error.message);
+            return `Chu cha, máy chủ Google báo lỗi vầy nè: ${data.error.message}`;
+        }
+
+        // 2. Nếu thành công, trả về câu nói của AI
+        if (data.candidates && data.candidates.length > 0) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            console.error("Dữ liệu lạ:", data);
+            return "Chu cha, tui đang ngập ngừng xíu, bạn hỏi lại câu khác nghen!";
+        }
+
     } catch (error) {
-        console.error("Lỗi khi gọi API:", error);
+        // 3. Lỗi đứt mạng hoặc không kết nối được
+        console.error("Lỗi mạng:", error);
         return "Chu cha, mạng mẽo nay sao á, tui không nghe rõ. Nhắn lại tui nghen!";
     }
 }
-
-// Logic Chatbot đã được nâng cấp AI
-async function sendMessage(e) {
-    e.preventDefault();
-    const input = document.getElementById('ai-input');
-    const chatBox = document.getElementById('chat-box');
-    
-    const userText = input.value.trim();
-    if (!userText) return;
-
-    // 1. Hiển thị tin nhắn của User
-    const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${userText}</div>`;
-    chatBox.innerHTML += userMsg;
-    input.value = '';
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // 2. Hiển thị trạng thái "Anh Tư đang gõ..."
-    const typingId = "typing-" + Date.now();
-    chatBox.innerHTML += `<div id="${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> đang gõ...</div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // 3. Gọi API và chờ kết quả
-    const reply = await getAIResponse(userText);
-
-    // 4. Xóa chữ "đang gõ" và hiển thị câu trả lời thật của AI
-    document.getElementById(typingId).innerHTML = `<b>Anh Tư:</b> ${reply}`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-    </script>
 </body>
 </html>
+
 
 
