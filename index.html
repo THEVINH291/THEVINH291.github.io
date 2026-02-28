@@ -39,36 +39,22 @@
             border-color: rgba(251, 146, 60, 0.5);
         }
 
-        .chat-bubble {
-            max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            margin-bottom: 8px;
-            animation: fadeIn 0.3s ease;
-            line-height: 1.5;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
         #chat-box { scroll-behavior: smooth; }
-        /* Khung chứa tin nhắn và Avatar */
+
+        /* --- CSS CHO CHATBOT GIỐNG MESSENGER --- */
         .message-row {
             display: flex;
             gap: 12px;
-            margin-bottom: 12px;
-            align-items: flex-end; /* Căn dưới cùng cho giống Messenger */
+            margin-bottom: 16px;
+            align-items: flex-end;
             width: 100%;
         }
         
         .message-row.user {
-            flex-direction: row-reverse; /* Đẩy avatar và tin nhắn của bạn sang phải */
+            flex-direction: row-reverse;
         }
 
-        /* Hình đại diện */
         .avatar {
             width: 36px;
             height: 36px;
@@ -78,9 +64,17 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
         }
 
-        /* Reset margin của bubble cũ vì đã có message-row quản lý khoảng cách */
-        .message-row .chat-bubble {
-            margin-bottom: 0; 
+        .chat-bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            animation: fadeIn 0.3s ease;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Hiệu ứng 3 dấu chấm đang gõ... */
@@ -98,7 +92,7 @@
         .typing-dot {
             width: 8px;
             height: 8px;
-            background-color: #fdba74; /* Màu cam nhạt */
+            background-color: #fdba74;
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
@@ -192,22 +186,28 @@
     </div>
 
     <script>
-        // 1. Thay Key API của bạn vào đây nhen
+        // 1. CẤU HÌNH API (ĐỂ NGUYÊN 1 CHUỖI NHƯ YÊU CẦU CỦA BẠN)
+        // Lưu ý: Hãy đảm bảo bạn đã khóa giới hạn tên miền trên Google Cloud để bảo mật nhé!
         const API_KEY = 'AIzaSyBIpxoX4hE9aYVzrturDAkz8TV_DLNgUd0'; 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-        // 2. Nội dung các tab
+        // Link Avatar
+        const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
+        const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
+
+        // 2. Nội dung các tính năng
         const features = {
-           'Chatbot Thổ Địa': {
+            'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
-                content: `<div id="chat-box" class="space-y-4 flex flex-col pb-4 no-scrollbar">
+                content: `<div id="chat-box" class="space-y-2 flex flex-col pb-4 no-scrollbar">
                             <div class="message-row">
-                                <img src="https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true" alt="Anh Tư" class="avatar">
+                                <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
                                 <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
-                                    Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Cần hỏi gì về Bình Định cứ nhắn tui nhen!
+                                    Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Bạn muốn hỏi chỗ ăn ngon hay cảnh đẹp Bình Định cứ nói tui nghe!
                                 </div>
                             </div>
                          </div>`
+            },
             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `<div class="space-y-4">
@@ -224,8 +224,14 @@
             'Audio Thuyết minh': {
                 icon: '<i class="fa-solid fa-headphones"></i>',
                 content: `<div class="space-y-3">
-                            <div class="flex items-center justify-between bg-white/5 p-4 rounded-xl"><span>Sự tích Đầm Thị Nại</span><i class="fa-solid fa-circle-play text-orange-500 text-2xl"></i></div>
-                            <div class="flex items-center justify-between bg-white/5 p-4 rounded-xl"><span>Huyền thoại Võ Tây Sơn</span><i class="fa-solid fa-circle-play text-orange-500 text-2xl"></i></div>
+                            <div onclick="toggleAudio('LINK_FILE_MP3_THI_NAI.mp3', this)" class="flex items-center justify-between bg-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition-all border border-white/5">
+                                <span>Sự tích Đầm Thị Nại</span>
+                                <i class="fa-solid fa-circle-play text-orange-500 text-2xl play-icon"></i>
+                            </div>
+                            <div onclick="toggleAudio('LINK_FILE_MP3_TAY_SON.mp3', this)" class="flex items-center justify-between bg-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition-all border border-white/5">
+                                <span>Huyền thoại Võ Tây Sơn</span>
+                                <i class="fa-solid fa-circle-play text-orange-500 text-2xl play-icon"></i>
+                            </div>
                          </div>`
             },
             'Học Tiếng Nẫu': {
@@ -238,7 +244,10 @@
             }
         };
 
-        // 3. Hàm mở/đóng tính năng
+        // 3. Logic Đóng/Mở Modal & Quản lý Audio
+        let currentAudio = null;
+        let currentIcon = null;
+
         function openFeature(name) {
             const modal = document.getElementById('modal');
             document.getElementById('modal-title').innerText = name;
@@ -255,22 +264,55 @@
 
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
+            // Tắt nhạc khi đóng bảng
+            if (currentAudio) {
+                currentAudio.pause();
+                if (currentIcon) {
+                    currentIcon.classList.remove('fa-circle-pause');
+                    currentIcon.classList.add('fa-circle-play');
+                }
+            }
+        }
+
+        function toggleAudio(url, element) {
+            const icon = element.querySelector('.play-icon');
+            
+            if (currentAudio && currentAudio.src.includes(url) && !currentAudio.paused) {
+                currentAudio.pause();
+                icon.classList.remove('fa-circle-pause');
+                icon.classList.add('fa-circle-play');
+                return;
+            }
+
+            if (currentAudio) {
+                currentAudio.pause();
+                if (currentIcon) {
+                    currentIcon.classList.remove('fa-circle-pause');
+                    currentIcon.classList.add('fa-circle-play');
+                }
+            }
+
+            currentAudio = new Audio(url);
+            currentAudio.play();
+            icon.classList.remove('fa-circle-play');
+            icon.classList.add('fa-circle-pause');
+            currentIcon = icon;
+
+            currentAudio.onended = function() {
+                icon.classList.remove('fa-circle-pause');
+                icon.classList.add('fa-circle-play');
+            };
         }
 
         // 4. Hàm Gửi Tin Nhắn Chatbot
         async function sendMessage(event) {
-            const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
-            const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
-        }
-            chatBox.innerHTML += `<div class="chat-bubble bg-white/10 text-white self-end ml-auto border border-white/20"><b>Bạn:</b> ${text}</div>`;
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-            const responseText = await getAIResponse(text);
-            chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20"><b>Anh Tư:</b> ${responseText}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+            event.preventDefault();
+            const input = document.getElementById('ai-input');
+            const chatBox = document.getElementById('chat-box');
+            const text = input.value.trim();
+            if (!text) return;
 
-            // 1. IN TIN NHẮN CỦA BẠN (Kèm Avatar)
+            // In tin nhắn của bạn
             chatBox.innerHTML += `
                 <div class="message-row user">
                     <img src="${userAvatar}" alt="Bạn" class="avatar">
@@ -281,8 +323,8 @@
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // 2. IN HIỆU ỨNG "ANH TƯ ĐANG GÕ..."
-            const typingId = 'typing-' + Date.now(); // Tạo ID ngẫu nhiên để lát nữa xóa
+            // In hiệu ứng Đang gõ...
+            const typingId = 'typing-' + Date.now();
             chatBox.innerHTML += `
                 <div id="${typingId}" class="message-row">
                     <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
@@ -294,13 +336,13 @@
                 </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // 3. GỌI API LẤY CÂU TRẢ LỜI
+            // Lấy câu trả lời
             const responseText = await getAIResponse(text);
 
-            // 4. XÓA HIỆU ỨNG ĐANG GÕ VÀ IN TIN NHẮN THẬT CỦA ANH TƯ
+            // Xóa hiệu ứng đang gõ và in câu trả lời
             const typingElement = document.getElementById(typingId);
             if (typingElement) typingElement.remove();
-            
+
             chatBox.innerHTML += `
                 <div class="message-row">
                     <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
@@ -310,11 +352,34 @@
                 </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
         }
+
+        // 5. Hàm giao tiếp với Google Gemini
+        async function getAIResponse(userText) {
+            const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("LỖI TỪ GOOGLE:", data);
+                    return `Anh Tư bị kẹt xíu rồi: ${data.error ? data.error.message : 'Không xác định'}`;
+                }
+
+                if (data.candidates && data.candidates[0].content) {
+                    return data.candidates[0].content.parts[0].text;
+                }
+                return "Chu cha, nãy giờ tui hổng nghe rõ. Nhắn lại nhen!";
+            } catch (e) {
+                console.error("Lỗi:", e);
+                return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
+            }
+        }
     </script>
 </body>
 </html>
-
-
-
-
-
