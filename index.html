@@ -198,17 +198,16 @@
 
         // 2. Nội dung các tab
         const features = {
-            'Chatbot Thổ Địa': {
+           'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
-                content: `<div id="chat-box" class="space-y-4 flex flex-col pb-4">
+                content: `<div id="chat-box" class="space-y-4 flex flex-col pb-4 no-scrollbar">
                             <div class="message-row">
-                                <img src="https://ui-avatars.com/api/?name=Anh+Tư&background=f97316&color=fff&rounded=true" alt="Anh Tư" class="avatar">
+                                <img src="https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true" alt="Anh Tư" class="avatar">
                                 <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
-                                    Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Bạn muốn hỏi chỗ ăn ngon hay cảnh đẹp Bình Định cứ nói tui nghe!
+                                    Chu cha! Chào Vinh nhen. Tui là Anh Tư Nẫu. Cần hỏi gì về Bình Định cứ nhắn tui nhen!
                                 </div>
                             </div>
                          </div>`
-            },
             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `<div class="space-y-4">
@@ -260,36 +259,16 @@
 
         // 4. Hàm Gửi Tin Nhắn Chatbot
         async function sendMessage(event) {
-            event.preventDefault();
-            const input = document.getElementById('ai-input');
-            const chatBox = document.getElementById('chat-box');
-            const text = input.value.trim();
-            if (!text) return;
-
-            // In tin nhắn của bạn
+            const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
+            const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
+        }
             chatBox.innerHTML += `<div class="chat-bubble bg-white/10 text-white self-end ml-auto border border-white/20"><b>Bạn:</b> ${text}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Lấy câu trả lời từ AI
             const responseText = await getAIResponse(text);
-
-            // In tin nhắn của Anh Tư
             chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 text-orange-100 self-start border border-orange-500/20"><b>Anh Tư:</b> ${responseText}</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
         }
-
-        // 5. Hàm giao tiếp với Google Gemini
-       async function sendMessage(event) {
-            event.preventDefault();
-            const input = document.getElementById('ai-input');
-            const chatBox = document.getElementById('chat-box');
-            const text = input.value.trim();
-            if (!text) return;
-
-            // Link Avatar tự động tạo từ tên
-            const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
-            const aiAvatar = "https://ui-avatars.com/api/?name=Anh+Tư&background=f97316&color=fff&rounded=true";
 
             // 1. IN TIN NHẮN CỦA BẠN (Kèm Avatar)
             chatBox.innerHTML += `
@@ -334,6 +313,7 @@
     </script>
 </body>
 </html>
+
 
 
 
